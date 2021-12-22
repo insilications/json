@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : json
 Version  : 3.10.4
-Release  : 305
+Release  : 306
 URL      : file:///aot/build/clearlinux/packages/json/json-v3.10.4.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/json/json-v3.10.4.tar.gz
 Summary  : JSON for Modern C++
@@ -14,7 +14,6 @@ License  : GPL-2.0
 Requires: jsoncpp-lib
 BuildRequires : binutils-dev
 BuildRequires : buildreq-cmake
-BuildRequires : buildreq-meson
 BuildRequires : curl
 BuildRequires : curl-dev
 BuildRequires : doxygen
@@ -25,7 +24,6 @@ BuildRequires : gcc-libs-math
 BuildRequires : gcc-libstdc++32
 BuildRequires : gcc-libubsan
 BuildRequires : gcc-locale
-BuildRequires : git
 BuildRequires : glibc-dev
 BuildRequires : glibc-staticdev
 BuildRequires : libedit
@@ -52,6 +50,16 @@ BuildRequires : zlib-staticdev
 %description
 [![JSON for Modern C++](https://raw.githubusercontent.com/nlohmann/json/master/doc/json.gif)](https://github.com/nlohmann/json/releases)
 
+%package dev
+Summary: dev components for the json package.
+Group: Development
+Provides: json-devel = %{version}-%{release}
+Requires: json = %{version}-%{release}
+
+%description dev
+dev components for the json package.
+
+
 %prep
 %setup -q -n json
 cd %{_builddir}/json
@@ -62,7 +70,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1640177858
+export SOURCE_DATE_EPOCH=1640178734
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -325,7 +333,7 @@ fi
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1640177858
+export SOURCE_DATE_EPOCH=1640178734
 rm -rf %{buildroot}
 pushd clr-build-special
 %make_install_special  || :
@@ -336,3 +344,11 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files dev
+%defattr(-,root,root,-)
+/usr/include/nlohmann/json.hpp
+/usr/lib64/cmake/nlohmann_json/nlohmann_jsonConfig.cmake
+/usr/lib64/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake
+/usr/lib64/cmake/nlohmann_json/nlohmann_jsonTargets.cmake
+/usr/lib64/pkgconfig/nlohmann_json.pc
